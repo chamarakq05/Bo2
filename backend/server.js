@@ -2,20 +2,19 @@ const express = require("express");
 
 const app = express();
 
-app.use(express.json());
-
-
-app.get("/", (req,res)=>{
-    res.status(200).json({
-        status:"Mega SicBo Backend Running",
-        port:process.env.PORT
-    });
+app.get("/", (req, res) => {
+  res.send("Mega SicBo Backend OK");
 });
 
+app.get("/health", (req, res) => {
+  res.json({
+    ok: true,
+    time: new Date()
+  });
+});
 
-const PORT = process.env.PORT;
+const PORT = Number(process.env.PORT) || 8080;
 
-
-app.listen(PORT, "0.0.0.0", ()=>{
-    console.log("Listening on PORT:", PORT);
+app.listen(PORT, () => {
+  console.log("SERVER STARTED:", PORT);
 });
