@@ -4,12 +4,18 @@ const app = express();
 
 app.use(express.json());
 
+
 app.get("/", (req,res)=>{
-  res.send("Mega SicBo Backend Running");
+    res.status(200).json({
+        status:"Mega SicBo Backend Running",
+        port:process.env.PORT
+    });
 });
 
-const PORT = process.env.PORT || 8080;
+
+const PORT = process.env.PORT;
+
 
 app.listen(PORT, "0.0.0.0", ()=>{
- console.log("Server running on " + PORT);
+    console.log("Listening on PORT:", PORT);
 });
