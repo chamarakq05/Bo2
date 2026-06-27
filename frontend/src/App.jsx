@@ -1,35 +1,29 @@
 import { useEffect, useState } from "react";
 
-function App(){
+export default function App(){
 
-const [status,setStatus] = useState("Loading...");
+  const [data,setData] = useState("Loading...");
 
+  useEffect(()=>{
 
-useEffect(()=>{
+    fetch("https://bo2-production-f1ff.up.railway.app/")
+    .then(res=>res.text())
+    .then(result=>{
+      setData(result);
+    })
+    .catch(()=>{
+      setData("Backend Error");
+    });
 
-fetch("https://bo2-production-f1ff.up.railway.app/")
-.then(res=>res.text())
-.then(data=>{
- setStatus(data);
-})
-.catch(err=>{
- setStatus("Backend Error");
-});
-
-
-},[]);
+  },[]);
 
 
-return(
-<div>
+  return (
+    <div>
+      <h1>Mega SicBo Dashboard</h1>
 
-<h1>Mega SicBo Dashboard</h1>
+      <h2>{data}</h2>
 
-<h3>{status}</h3>
-
-</div>
-)
-
+    </div>
+  );
 }
-
-export default App;
