@@ -1,17 +1,30 @@
-const { chromium } = require('playwright');
+const { chromium } = require("playwright");
 
-async function captureGame(){
- const browser = await chromium.launch({headless:true});
- const page = await browser.newPage();
 
- await page.goto(process.env.SITE_URL || 'https://example.com');
+async function capture(){
 
- await page.screenshot({
-   path:'game.png'
- });
+    const browser = await chromium.launch({
+        headless:true
+    });
 
- await browser.close();
- console.log('Screenshot saved');
+
+    const page = await browser.newPage();
+
+
+    await page.goto("https://example.com");
+
+
+    await page.screenshot({
+        path:"capture.png"
+    });
+
+
+    await browser.close();
+
+
+    return "Screenshot captured";
+
 }
 
-captureGame();
+
+module.exports = capture;
