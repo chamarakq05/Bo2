@@ -27,7 +27,6 @@ app.get("/test-browser", async(req,res)=>{
 
         const browser = await chromium.launch({
     headless:true,
-    executablePath: "/usr/bin/chromium",
     args:[
         "--no-sandbox",
         "--disable-setuid-sandbox"
