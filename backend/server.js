@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-
-const capture = require("./browser/capture");
+const { chromium } = require("playwright");
 
 const app = express();
 
@@ -10,40 +9,49 @@ app.use(express.json());
 
 
 app.get("/", (req,res)=>{
-
     res.send("Mega SicBo Backend OK");
-
 });
 
 
 app.get("/health",(req,res)=>{
-
     res.json({
         ok:true
     });
-
 });
 
 
-app.get("/capture", async (req,res)=>{
+
+app.get("/test-browser", async(req,res)=>{
 
     try{
 
-        const result = await capture();
-
-        res.json({
-
-            status: result
-
+        const browser = await chromium.launch({
+            headless:true,
+            args:[
+                "--no-sandbox",
+                "--disable-setuid-sandbox"
+            ]
         });
 
 
-    }catch(error){
+        const page = await browser.newPage();
+
+        await page.goto("https://google.com");
+
+
+        await browser.close();
+
+
+        res.json({
+            browser:true,
+            message:"Playwright working"
+        });
+
+
+    }catch(e){
 
         res.status(500).json({
-
-            error: error.message
-
+            error:e.message
         });
 
     }
@@ -52,11 +60,14 @@ app.get("/capture", async (req,res)=>{
 
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
 
 app.listen(PORT,"0.0.0.0",()=>{
 
-    console.log("SERVER STARTED:",PORT);
+console.log(
+"SERVER STARTED:",
+PORT
+);
 
 });
