@@ -26,12 +26,13 @@ app.get("/test-browser", async(req,res)=>{
     try{
 
         const browser = await chromium.launch({
-            headless:true,
-            args:[
-                "--no-sandbox",
-                "--disable-setuid-sandbox"
-            ]
-        });
+    headless:true,
+    executablePath: "/usr/bin/chromium",
+    args:[
+        "--no-sandbox",
+        "--disable-setuid-sandbox"
+    ]
+});
 
 
         const page = await browser.newPage();
