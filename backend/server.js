@@ -20,7 +20,7 @@ app.get("/health",(req,res)=>{
 });
 
 
-
+// PLAYWRIGHT TEST
 app.get("/test-browser", async(req,res)=>{
 
     try{
@@ -46,6 +46,59 @@ app.get("/test-browser", async(req,res)=>{
             browser:true,
             message:"Playwright working"
         });
+
+
+    }catch(e){
+
+        res.status(500).json({
+            error:e.message
+        });
+
+    }
+
+});
+
+
+
+// CAPTURE ROUTE
+app.get("/capture", async(req,res)=>{
+
+    try{
+
+        const browser = await chromium.launch({
+            headless:true,
+            args:[
+                "--no-sandbox",
+                "--disable-setuid-sandbox"
+            ]
+        });
+
+
+        const page = await browser.newPage();
+
+
+        await page.goto(
+          "https://google.com",
+          {
+            waitUntil:"networkidle"
+          }
+        );
+
+
+        const image = await page.screenshot({
+            fullPage:true
+        });
+
+
+        await browser.close();
+
+
+        res.setHeader(
+          "Content-Type",
+          "image/png"
+        );
+
+        res.send(image);
 
 
     }catch(e){
